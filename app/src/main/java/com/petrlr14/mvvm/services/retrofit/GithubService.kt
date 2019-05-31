@@ -17,10 +17,21 @@ interface GithubService{
 
 
     companion object {
-        fun getGithubService():GithubService=Retrofit.Builder()
-            .baseUrl(GITHUB_BASE_URL)
-            .addConverterFactory(MoshiConverterFactory.create())
-            .addCallAdapterFactory(CoroutineCallAdapterFactory())
-            .build().create(GithubService::class.java)
+
+        var INSTANCE: GithubService?= null
+
+        fun getGithubService():GithubService {
+            return if(INSTANCE!=null){
+                INSTANCE!!
+            }else {
+                INSTANCE = Retrofit
+                    .Builder()
+                    .baseUrl(GITHUB_BASE_URL)
+                    .addConverterFactory(MoshiConverterFactory.create())
+                    .addCallAdapterFactory(CoroutineCallAdapterFactory())
+                    .build().create(GithubService::class.java)
+                return INSTANCE!!
+            }
+        }
     }
 }

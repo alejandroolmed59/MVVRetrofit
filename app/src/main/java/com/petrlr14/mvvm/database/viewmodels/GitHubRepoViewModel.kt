@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.petrlr14.mvvm.database.RoomDB
 import com.petrlr14.mvvm.database.entities.GitHubRepo
 import com.petrlr14.mvvm.database.repositories.GitHubRepoRepository
+import com.petrlr14.mvvm.services.retrofit.GithubService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -17,7 +18,8 @@ class GitHubRepoViewModel(private val app: Application) : AndroidViewModel(app) 
 
     init {
         val repoDao=RoomDB.getInstance(app).repoDao()
-        repository= GitHubRepoRepository(repoDao)
+        val githubService = GithubService.getGithubService()
+        repository= GitHubRepoRepository(repoDao, githubService)
     }
 
     private suspend fun insert(repo:GitHubRepo)=repository.insert(repo)
@@ -38,7 +40,7 @@ class GitHubRepoViewModel(private val app: Application) : AndroidViewModel(app) 
         }else with(response){
             when(this.code()){
                 404->{
-                    Toast.makeText(app,"User not found",Toast.LENGTH_LONG).show()
+                    Toast.makeText(app,"RIPERINO",Toast.LENGTH_LONG).show()
                 }
             }
         }

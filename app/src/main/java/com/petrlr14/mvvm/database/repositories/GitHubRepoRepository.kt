@@ -11,10 +11,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
-class GitHubRepoRepository (private val repoDao:GitHubDAO){
+class GitHubRepoRepository (private val repoDao:GitHubDAO, private val githubService: GithubService){
 
-    fun retrieveReposAsync(user:String):Deferred<Response<List<GitHubRepo>>> =
-        GithubService.getGithubService().getAllReposPerUser(user)
 
     @WorkerThread
     suspend fun insert(repo:GitHubRepo){
@@ -29,5 +27,7 @@ class GitHubRepoRepository (private val repoDao:GitHubDAO){
     suspend fun nuke(){
         return repoDao.nukeTable()
     }
+    fun retrieveReposAsync(user:String):Deferred<Response<List<GitHubRepo>>> =
+        githubService.getAllReposPerUser(user)
 
 }
